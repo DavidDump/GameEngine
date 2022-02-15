@@ -5,28 +5,33 @@
 #ifndef _IOSTREAM_
 #include <iostream>
 #endif
+#ifndef _STRING_
+#include <string>
+#endif
 
-struct ShaderSources {
-    std::string vertexSource;
-    std::string fragmentSource;
-};
 
 class Shader {
     private:
-        ShaderSources shadersRAW;
+        // ShaderSources shadersRAW;
+        std::string vertex;
+        std::string fragment;
         unsigned int shader;
 
     public:
-        Shader(const std::string& path);
+        // Constructor
+        Shader(const std::string& vertPath, const std::string& fragPath);
 
         // Return shader ID
         unsigned int GetID();
 
-        // Return shader raw string
-        ShaderSources GetShaderRAW();
+        // Return vertex shader raw string
+        std::string GetVertex();
 
-        // Parse the shader input into the vertex and fragment shader
-        ShaderSources ParseShader(const std::string& path);
+        // Return fragment shader raw string
+        std::string GetFragment();
+
+        // Load a shader from file and return it
+        std::string LoadShader(const std::string& path);
 
         // Compile a single shader
         unsigned int CompileShader(unsigned int type, const std::string& source);

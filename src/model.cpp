@@ -38,10 +38,10 @@ Model::Model(const char* path, int inst, std::vector<glm::mat4> modelMat){
     model.Bind();
     VertexBuffer vertexBuffer(vertices);
     IndexBuffer indexBuffer(indexes);
-    model.SetVertexBufferLayout(0, 3, offsetof(Vertex, position)); // position
+    model.SetVertexBufferLayout(0, 3, offsetof(Vertex, position));  // position
     model.SetVertexBufferLayout(1, 2, offsetof(Vertex, textureUV)); // textureUV
-    model.SetVertexBufferLayout(2, 3, offsetof(Vertex, normals)); // normals
-    model.SetVertexBufferLayout(3, 3, offsetof(Vertex, color)); // color
+    model.SetVertexBufferLayout(2, 3, offsetof(Vertex, normals));   // normals
+    model.SetVertexBufferLayout(3, 3, offsetof(Vertex, color));     // color
 
     // VertexBuffer modelMatrixBuffer(modelMatrices);
     // if(instances != 1){

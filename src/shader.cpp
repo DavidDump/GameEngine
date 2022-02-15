@@ -10,9 +10,11 @@
 #include "shader.h"
 #include "debug.h"
 
-Shader::Shader(const std::string& path) {
-    shadersRAW = ParseShader(path);
-    shader = CreateShader(shadersRAW.vertexSource, shadersRAW.fragmentSource);
+Shader::Shader(const std::string& vertPath, const std::string& fragPath) {
+    // shadersRAW = ParseShader(path);
+    vertex = LoadShader(vertPath);
+    fragment = LoadShader(fragPath);
+    shader = CreateShader(vertex, fragment);
     Bind();
 }
 
@@ -20,44 +22,27 @@ unsigned int Shader::GetID() {
     return shader;
 }
 
-ShaderSources Shader::GetShaderRAW() {
-    return shadersRAW;
+std::string Shader::GetVertex(){
+    return vertex;
 }
 
-ShaderSources Shader::ParseShader(const std::string& path) {
-    std::fstream shaderFile(path);
+std::string Shader::GetFragment(){
+    return fragment;
+}
 
-    int type = -1;
-    std::string vertexShader;
-    std::string fragmentShader;
+std::string Shader::LoadShader(const std::string& path){
+    std::fstream input(path);
+
     std::string line;
+    std::string shader;
 
-    if (shaderFile.is_open()) {
-        while (getline(shaderFile, line)) {
-            if (line.find("#shader") != std::string::npos) {
-                if (line.find("vertex") != std::string::npos) {
-                    type = 0;
-                }
-                else if (line.find("fragment") != std::string::npos) {
-                    type = 1;
-                }
-            }
-            else if (type == 0) {
-                vertexShader.append(line.c_str());
-                vertexShader.append("\n");
-            }
-            else if (type == 1) {
-                fragmentShader.append(line.c_str());
-                fragmentShader.append("\n");
-            }
+    if(input.is_open()){
+        while(getline(input, line)){
+            shader.append(line.c_str());
+            shader.append("\n");
         }
     }
-    else {
-        std::cout << "Failed to open " << path << " shader file." << std::endl;
-        return {};
-    }
-
-    return { vertexShader, fragmentShader };
+    return shader;
 }
 
 unsigned int Shader::CompileShader(unsigned int type, const std::string& source) {

@@ -30,6 +30,13 @@ animation engine
 
 */
 
+std::vector<Model> objs;
+void AddModel(const char* path){
+    Model model(path);
+    objs.push_back(model);
+}
+
+
 int main(){
     // Setup Code
     GLFWwindow* window;
@@ -64,21 +71,26 @@ int main(){
     std::vector<Model> objects;
     Camera camera(window, glm::vec3(0, 0, 5), 45.0f);
     
-    Shader basicShader("shaders/shader.shader");
+    Shader basicShader("shaders/default.vshader","shaders/default.fshader");
     // basicShader.SendUniform("u_Color", 0.1f, 0.2f, 0.3f, 1.0f);
     basicShader.SendUniform("u_Color", 0.70f, 1.00f, 0.40f, 1.0f);
     
     Model monkey("obj/monkey.obj");
+    monkey.TranslationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-5.0f, 0.0f, 0.0f));
     objects.push_back(monkey);
+    Model monkey2("obj/monkey.obj");
+    monkey2.TranslationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(5.0f, 0.0f, 0.0f));
+    objects.push_back(monkey2);
     // Model monkey2("obj/lightCube.obj", glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 
     // Textures 
     /*
     */
-    int imgWidth, imgHeight, colorChanels;
-    unsigned char* bytes = stbi_load("textures/icon.png", &imgWidth, &imgHeight, &colorChanels, 0);
-    Texture testTexure(bytes, GL_TEXTURE0, imgWidth, imgHeight);
-    basicShader.SendUniform("text0", 0);
+    // int imgWidth, imgHeight, colorChanels;
+    // unsigned char* bytes = stbi_load("textures/icon.png", &imgWidth, &imgHeight, &colorChanels, 0);
+    // Texture testTexure(bytes, GL_TEXTURE0, imgWidth, imgHeight);
+    // basicShader.SendUniform("text0", 0);
+    // free(bytes);
     // send the texture slot to the GPU - uniform: tex0 = 0
 
     // Lighting
