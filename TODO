@@ -9,8 +9,8 @@ Rendering Engine:
     ☐ GLSL syntax highlighting
 
 Physics engine:
-    ☐ GDK algorithm
-    ☐ The other one that I forgot for collision detection
+    ☐ GjK algorithm
+    ☐ EPA algorithm
     ☐ some algorith to only check collisions between some objects for performace
 
 Animation engine:   
