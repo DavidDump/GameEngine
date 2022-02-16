@@ -6,9 +6,8 @@
 #include <glm/vec2.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#ifndef _VECTOR_
+#include <glm/gtx/euler_angles.hpp>
 #include <vector>
-#endif
 #include "camera.h"
 #include "shader.h"
 #include "vertexArrayObject.h"
@@ -38,7 +37,9 @@ class Model{
         std::vector<unsigned int> indexes;
 
         glm::mat4 TranslationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-        glm::mat4 RotationMatrix = glm::mat4(1.0f);
+        // glm::mat4 RotationMatrix = glm::mat4(1.0f);
+        // glm::mat4 RotationMatrix = glm::mat4_cast(glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
+        glm::mat4 RotationMatrix = glm::eulerAngleXYZ(1.0f, 0.0f, 0.0f);
         glm::mat4 ScalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 
 

@@ -64,12 +64,16 @@ Model::Model(const char* path, int inst, std::vector<glm::mat4> modelMat){
 }
 
 void Model::Draw(Shader shader, Camera camera){
-    glm::mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScalingMatrix;
+    // glm::mat4 ModelMatrix = TranslationMatrix * RotationMatrix * ScalingMatrix;
     
-    glm::mat4 MVPMatrix = camera.ProjectionMatrix * camera.GetViewMatrix() * ModelMatrix;
+    // glm::mat4 MVPMatrix = camera.ProjectionMatrix * camera.GetViewMatrix() * ModelMatrix;
 
     shader.Bind();
-    shader.SendUniform("u_MVP", MVPMatrix);
+    shader.SendUniform("u_TranslationMatrix", TranslationMatrix);
+    shader.SendUniform("u_RotationMatrix", RotationMatrix);
+    shader.SendUniform("u_ScalingMatrix", ScalingMatrix);
+    shader.SendUniform("u_CameraMatrix", camera.GetViewMatrix());
+    shader.SendUniform("u_ProjectionMatrix", camera.ProjectionMatrix);
 
     model.Bind();
     // shader.Bind();

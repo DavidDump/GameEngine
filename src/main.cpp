@@ -14,13 +14,8 @@
 #include "camera.h"
 #include "stb_image.h"
 #include "model.h"
+#include "renderer.h"
 #include "texture.h"
-
-std::vector<Model> objs;
-void AddModel(const char* path){
-    Model model(path);
-    objs.push_back(model);
-}
 
 int main(){
     // Setup Code
@@ -53,19 +48,15 @@ int main(){
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
     
     // Main code
-    std::vector<Model> objects;
+    Renderer renderer;
     Camera camera(window, glm::vec3(0, 0, 5), 45.0f);
     
     Shader basicShader("shaders/default.vshader","shaders/default.fshader");
     // basicShader.SendUniform("u_Color", 0.1f, 0.2f, 0.3f, 1.0f);
     basicShader.SendUniform("u_Color", 0.70f, 1.00f, 0.40f, 1.0f);
     
-    Model monkey("obj/monkey.obj");
-    monkey.TranslationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-5.0f, 0.0f, 0.0f));
-    objects.push_back(monkey);
-    Model monkey2("obj/monkey.obj");
-    monkey2.TranslationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(5.0f, 0.0f, 0.0f));
-    objects.push_back(monkey2);
+    renderer.AddModel("obj/monkey.obj");
+    renderer.SetRotiation(0, glm::vec3(0.0f, 0.0f, 1.0f));
     // Model monkey2("obj/lightCube.obj", glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 
     // Textures 
@@ -115,13 +106,10 @@ int main(){
         basicShader.Bind();
         basicShader.SendUniform("u_lightColor", 1.0f, 1.0f, 1.0f, 1.0f);
         basicShader.SendUniform("u_lightPos", 0.0f, 5.0f, 3.0f);
-        basicShader.SendUniform("u_modelMatrix", monkey.TranslationMatrix * monkey.RotationMatrix * monkey.ScalingMatrix);
         basicShader.SendUniform("u_camPos", camera.position.x, camera.position.y, camera.position.z);
 
         // Draw all objects
-        for(unsigned int i = 0; i < objects.size(); i++){
-            objects[i].Draw(basicShader, camera);
-        }
+        renderer.DrawObjects(basicShader, camera);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
