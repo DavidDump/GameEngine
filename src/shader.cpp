@@ -42,6 +42,7 @@ std::string Shader::LoadShader(const std::string& path){
             shader.append("\n");
         }
     }
+    input.close();
     return shader;
 }
 

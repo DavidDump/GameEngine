@@ -16,26 +16,11 @@
 #include "model.h"
 #include "texture.h"
 
-/*
-
-TODO LIST
-
--texture class - wrapper for OpenGL functions
--lighting - ambient light, radiating single source, sunlight
--model class - store all data about one model
-maybe mesh class ? dont know what that would be good for
-expand model loader to work with more file types and  better recognise .obj layouts
-physics engine
-animation engine
-
-*/
-
 std::vector<Model> objs;
 void AddModel(const char* path){
     Model model(path);
     objs.push_back(model);
 }
-
 
 int main(){
     // Setup Code

@@ -1,0 +1,9 @@
+✔ texture class - wrapper for OpenGL functions
+✔ lighting - ambient light, radiating single source, sunlight
+✔ model class - store all data about one model
+☐ expand model loader to work with more file types and  better recognise .obj layouts
+✔ added model loader support for files that dont contain UVs and normals
+☐ physics engine
+☐ animation engine
+☐ light class
+☐ renderer class

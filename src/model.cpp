@@ -92,103 +92,63 @@ void Model::LoadModel(const char* path){
         return;
     }
     
-    // std::string asd = "//123";
-    // std::cout << "first: \"" << substring(asd, '/').first <<  "\" second: " <<  "\"" << substring(asd, '/').second << "\"" << std::endl;
+    bool normals = false;
+    bool uvs = false;
 
-    std::getline(input, buffer);
-    while(!input.eof()){
-        // ignore comments and such
-        if(buffer[0] != 'v' && buffer[0] != 'f'){
-            std::getline(input, buffer);
-            continue;
-        }
+    while(getline(input, buffer)){
         if(buffer.find("v ") != std::string::npos){
             // store vertex data
-            std::size_t index;
+            float pos[3];
+            sscanf(buffer.c_str(), "v %f %f %f", &pos[0], &pos[1], &pos[2]);
 
-            index = buffer.find(' ');
-            buffer = buffer.substr(index + 1, std::string::npos);
-            index = buffer.find(' ');
-            std::string str1 = buffer.substr(0, index);
-            buffer = buffer.substr(index + 1, std::string::npos);
-            index = buffer.find(' ');
-            std::string str2 = buffer.substr(0, index);
-            buffer = buffer.substr(index + 1, std::string::npos);
-            index = buffer.find(' ');
-            std::string str3 = buffer.substr(0, index);
-
-            vertexData.push_back(glm::vec3(std::stof(str1), std::stof(str2), std::stof(str3)));
+            vertexData.push_back(glm::vec3(pos[0], pos[1], pos[2]));
         }else if(buffer.find("vt ") != std::string::npos){
             // store UVs/texture data
-            std::size_t index;
+            float uv[2];
+            sscanf(buffer.c_str(), "vt %f %f", &uv[0], &uv[1]);
 
-            index = buffer.find(' ');
-            buffer = buffer.substr(index + 1, std::string::npos);
-            index = buffer.find(' ');
-            std::string str1 = buffer.substr(0, index);
-            buffer = buffer.substr(index + 1, std::string::npos);
-            index = buffer.find(' ');
-            std::string str2 = buffer.substr(0, index);
-
-            textureData.push_back(glm::vec2(std::stof(str1), std::stof(str2)));
+            textureData.push_back(glm::vec2(uv[0], uv[1]));
+            uvs = true;
         }else if(buffer.find("vn ") != std::string::npos){
             // store normals
-            std::size_t index;
+            float norm[3];
+            sscanf(buffer.c_str(), "vn %f %f %f", &norm[0], &norm[1], &norm[2]);
 
-            index = buffer.find(' ');
-            buffer = buffer.substr(index + 1, std::string::npos);
-            index = buffer.find(' ');
-            std::string str1 = buffer.substr(0, index);
-            buffer = buffer.substr(index + 1, std::string::npos);
-            index = buffer.find(' ');
-            std::string str2 = buffer.substr(0, index);
-            buffer = buffer.substr(index + 1, std::string::npos);
-            index = buffer.find(' ');
-            std::string str3 = buffer.substr(0, index);
-
-            normalsData.push_back(glm::vec3(std::stof(str1), std::stof(str2), std::stof(str3)));
+            normalsData.push_back(glm::vec3(norm[0], norm[1], norm[2]));
+            normals = true;
         }else if(buffer.find("f ") != std::string::npos){
-            // store index data
-            std::pair<std::string, std::string> str = substring(substring(buffer, ' ').second, ' ');
-            std::pair<std::string, std::string> data = substring(str.first, '/');
-            vertexIndexData.push_back(std::stoi(data.first) - 1);
-            textureIndexData.push_back(std::stoi(substring(data.second, '/').first) - 1);
-            normalsIndexData.push_back(std::stoi(substring(data.second, '/').second) - 1);
+            // store indexes
+            if(normals == false && uvs == false){
+                // if there is only position data use this format
+                unsigned int pos[3];
+                sscanf(buffer.c_str(), "f %u %u %u", &pos[0], &pos[1], &pos[2]);
 
-            str = substring(str.second, ' ');
-            data = substring(str.first, '/');
-            vertexIndexData.push_back(std::stoi(data.first) - 1);
-            textureIndexData.push_back(std::stoi(substring(data.second, '/').first) - 1);
-            normalsIndexData.push_back(std::stoi(substring(data.second, '/').second) - 1);
+                vertexIndexData.push_back(pos[0] - 1);
+                vertexIndexData.push_back(pos[1] - 1);
+                vertexIndexData.push_back(pos[2] - 1);
+            }else {
+                // if there is pos, texture and normal data present use this format
+                unsigned int pos[3];
+                unsigned int uv[3];
+                unsigned int norm[3];
+                sscanf(buffer.c_str(), "f %u/%u/%u %u/%u/%u %u/%u/%u", &pos[0], &uv[0], &norm[0], &pos[1], &uv[1], &norm[1], &pos[2], &uv[2], &norm[2]);
+                
+                vertexIndexData.push_back(pos[0] - 1);
+                vertexIndexData.push_back(pos[1] - 1);
+                vertexIndexData.push_back(pos[2] - 1);
 
-            str = substring(str.second, ' ');
-            data = substring(str.first, '/');
-            vertexIndexData.push_back(std::stoi(data.first) - 1);
-            textureIndexData.push_back(std::stoi(substring(data.second, '/').first) - 1);
-            normalsIndexData.push_back(std::stoi(substring(data.second, '/').second) - 1);
+                textureIndexData.push_back(uv[0] - 1);
+                textureIndexData.push_back(uv[1] - 1);
+                textureIndexData.push_back(uv[2] - 1);
 
-            // code for loading .objs that only have vertex positions and are missing uvs and normals
-            // std::size_t index;
-
-            // index = buffer.find(' ');
-            // buffer = buffer.substr(index + 1, std::string::npos);
-            // index = buffer.find(' ');
-            // std::string str1 = buffer.substr(0, index);
-            // buffer = buffer.substr(index + 1, std::string::npos);
-            // index = buffer.find(' ');
-            // std::string str2 = buffer.substr(0, index);
-            // buffer = buffer.substr(index + 1, std::string::npos);
-            // index = buffer.find(' ');
-            // std::string str3 = buffer.substr(0, index);
-
-            // model.indexData.push_back(glm::vec3(std::stoi(str1) - 1.0f, std::stoi(str2) - 1.0f, std::stoi(str3) - 1.0f));
-            // vertexIndexData.push_back(std::stoi(str1) - 1);
-            // vertexIndexData.push_back(std::stoi(str2) - 1);
-            // vertexIndexData.push_back(std::stoi(str3) - 1);
+                normalsIndexData.push_back(norm[0] - 1);
+                normalsIndexData.push_back(norm[1] - 1);
+                normalsIndexData.push_back(norm[2] - 1);
+            }
         }
-        std::getline(input, buffer);
     }
 
+    // TODO: make better so we use the index buffer
     for(unsigned int i = 0; i < vertexIndexData.size(); i++){
         vertices.push_back(Vertex{
             vertexData[vertexIndexData[i]],     // position
