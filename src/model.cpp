@@ -27,9 +27,9 @@ std::pair<std::string, std::string> substring(std::string str, char delim){
 }
 
 Model::Model(const char* path, int inst, std::vector<glm::mat4> modelMat){
-    // TranslationMatrix = glm::translate(glm::mat4(1.0f), pos);
-    // RotationMatrix = glm::mat4(1.0f);
-    // ScalingMatrix = glm::scale(glm::mat4(1.0f), scale);
+    TranslationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+    RotationMatrix = glm::eulerAngleXYZ(0.0f, 0.0f, 0.0f);
+    ScalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
     instances = inst;
     modelMatrices = modelMat;
 
@@ -69,9 +69,7 @@ void Model::Draw(Shader shader, Camera camera){
     // glm::mat4 MVPMatrix = camera.ProjectionMatrix * camera.GetViewMatrix() * ModelMatrix;
 
     shader.Bind();
-    shader.SendUniform("u_TranslationMatrix", TranslationMatrix);
-    shader.SendUniform("u_RotationMatrix", RotationMatrix);
-    shader.SendUniform("u_ScalingMatrix", ScalingMatrix);
+    shader.SendUniform("u_ModelViewMatrix", TranslationMatrix * RotationMatrix * ScalingMatrix);
     shader.SendUniform("u_CameraMatrix", camera.GetViewMatrix());
     shader.SendUniform("u_ProjectionMatrix", camera.ProjectionMatrix);
 
@@ -171,4 +169,16 @@ void Model::SetColor(glm::vec3 color){
     for(unsigned int i = 0; i < vertices.size(); i++){
         vertices[i].color = color;
     }
+}
+
+void Model::SetPosition(glm::vec3 pos){
+    TranslationMatrix = glm::translate(glm::mat4(1.0f), pos);
+}
+
+void Model::SetRotiation(glm::vec3 rot){
+    RotationMatrix = glm::eulerAngleXYZ(rot.x, rot.y, rot.z);
+}
+
+void Model::SetScale(glm::vec3 scale){
+    ScalingMatrix = glm::scale(glm::mat4(1.0f), scale);
 }

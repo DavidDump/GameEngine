@@ -4,9 +4,11 @@
 #include "camera.h"
 #include <glm/gtx/euler_angles.hpp>
 
-void Renderer::AddModel(const char* path){
+int Renderer::AddModel(const char* path){
     Model obj(path);
     objects.push_back(obj);
+
+    return objects.size() - 1;
 }
 
 void Renderer::DrawObjects(Shader shader, Camera camera){
@@ -15,14 +17,18 @@ void Renderer::DrawObjects(Shader shader, Camera camera){
     }
 }
 
-void Renderer::SetPosition(int id, glm::vec3 pos){
-    objects[id].TranslationMatrix = glm::translate(glm::mat4(1.0f), pos);
+Model Renderer::GetModel(int id){
+    return objects[id];
 }
 
-void Renderer::SetRotiation(int id, glm::vec3 rot){
-    objects[id].RotationMatrix = glm::eulerAngleXYZ(rot.x, rot.y, rot.z);
+void Renderer::SetModelPosition(int id, glm::vec3 pos){
+    objects[id].SetPosition(pos);
 }
 
-void Renderer::SetScale(int id, glm::vec3 scale){
-    objects[id].ScalingMatrix = glm::scale(glm::mat4(1.0f), scale);
+void Renderer::SetModelRotiation(int id, glm::vec3 rot){
+    objects[id].SetRotiation(rot);
+}
+
+void Renderer::SetModelScale(int id, glm::vec3 scale){
+    objects[id].SetScale(scale);
 }

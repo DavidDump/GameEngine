@@ -55,10 +55,10 @@ int main(){
     // basicShader.SendUniform("u_Color", 0.1f, 0.2f, 0.3f, 1.0f);
     basicShader.SendUniform("u_Color", 0.70f, 1.00f, 0.40f, 1.0f);
     
-    renderer.AddModel("obj/monkey.obj");
-    renderer.SetPosition(0, glm::vec3(5.0f, 0.0f, 0.0f));
-    renderer.AddModel("obj/monkey.obj");
-    renderer.SetPosition(1, glm::vec3(-5.0f, 0.0f, 0.0f));
+    int id1 = renderer.AddModel("obj/monkey.obj");
+    renderer.SetModelPosition(id1, glm::vec3(0.0f, 0.0f, 0.0f));
+    int id2 = renderer.AddModel("obj/monkey.obj");
+    renderer.SetModelPosition(id2, glm::vec3(2.0f, 0.0f, 0.0f));
     // Model monkey2("obj/lightCube.obj", glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 
     // Textures 

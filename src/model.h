@@ -31,17 +31,14 @@ class Model{
         VertexArrayObject model;
 
         int instances;
+        
         std::vector<glm::mat4> modelMatrices;
     public:
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indexes;
-
-        glm::mat4 TranslationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-        // glm::mat4 RotationMatrix = glm::mat4(1.0f);
-        // glm::mat4 RotationMatrix = glm::mat4_cast(glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
-        glm::mat4 RotationMatrix = glm::eulerAngleXYZ(1.0f, 0.0f, 0.0f);
-        glm::mat4 ScalingMatrix = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-
+        glm::mat4 TranslationMatrix;
+        glm::mat4 RotationMatrix;
+        glm::mat4 ScalingMatrix;
 
         // Construction for model set the position, rotation, and scale
         // Model(const char* path, glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f));
@@ -56,6 +53,15 @@ class Model{
 
         // Set a color for every vertex
         void SetColor(glm::vec3 color);
+
+        // Set the position of the model
+        void SetPosition(glm::vec3 pos);
+
+        // Set the rotation of the model
+        void SetRotiation(glm::vec3 rot);
+
+        // Set the scale of the model
+        void SetScale(glm::vec3 scale);
 };
 
 #endif
