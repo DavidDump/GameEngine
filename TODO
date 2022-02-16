@@ -1,9 +1,18 @@
-✔ texture class - wrapper for OpenGL functions
-✔ lighting - ambient light, radiating single source, sunlight
-✔ model class - store all data about one model
-☐ expand model loader to work with more file types and  better recognise .obj layouts
-✔ added model loader support for files that dont contain UVs and normals
-☐ physics engine
-☐ animation engine
-☐ light class
-☐ renderer class
+Rendering Engine:
+    ✔ texture class - wrapper for OpenGL functions
+    ✔ model class - store all data about one model
+    ✔ renderer class
+    ✔ lighting - ambient light, radiating single source, sunlight
+    ☐ light class
+    ✔ added model loader support for files that dont contain UVs and normals
+    ☐ learn GLSL better
+    ☐ GLSL syntax highlighting
+
+Physics engine:
+    ☐ GDK algorithm
+    ☐ The other one that I forgot for collision detection
+    ☐ some algorith to only check collisions between some objects for performace
+
+Animation engine:   
+    ☐ expand model loader to work with more file types
+    ☐ add support for loading animation files

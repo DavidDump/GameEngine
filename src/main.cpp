@@ -56,7 +56,9 @@ int main(){
     basicShader.SendUniform("u_Color", 0.70f, 1.00f, 0.40f, 1.0f);
     
     renderer.AddModel("obj/monkey.obj");
-    renderer.SetRotiation(0, glm::vec3(0.0f, 0.0f, 1.0f));
+    renderer.SetPosition(0, glm::vec3(5.0f, 0.0f, 0.0f));
+    renderer.AddModel("obj/monkey.obj");
+    renderer.SetPosition(1, glm::vec3(-5.0f, 0.0f, 0.0f));
     // Model monkey2("obj/lightCube.obj", glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 
     // Textures 
@@ -68,9 +70,6 @@ int main(){
     // basicShader.SendUniform("text0", 0);
     // free(bytes);
     // send the texture slot to the GPU - uniform: tex0 = 0
-
-    // Lighting
-
 
     // FPS counter variables
 	double prevTime = 0.0;
